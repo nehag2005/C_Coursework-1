@@ -74,12 +74,9 @@ int main() {
        }
 
 
-
-       int steps_string_to_integer = atoi(steps);    // Week 3, Bootcamp 2, Session 2 codes, functions-ex.c
-
        strcpy(fitness_data_array[num_of_records].date, date);   //ChatGPT "How to store records in a typedef structure"
        strcpy(fitness_data_array[num_of_records].time, time);
-       fitness_data_array[num_of_records].steps, steps;
+       fitness_data_array[num_of_records].steps = atoi(steps);
                                         
        
         num_of_records++;
@@ -97,4 +94,3 @@ int main() {
 }
 
 
-// resize array 
