@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -54,8 +55,6 @@ int main() {
     int num_of_records = 0;
 
 
-   
-
     // Read the file
     while (fgets(line, char_buffer_per_line, file) != NULL) {
 
@@ -65,27 +64,25 @@ int main() {
         char time[6];
         char steps[8];
         tokeniseRecord(line, ",", date, time, steps);
-
-
        
-
-       if (num_of_records < 3) {                              // First three rows, < 3 as it terminates at 3 
-        printf("%s/%s/%s", date, time, steps);
-       }
-
-
        strcpy(fitness_data_array[num_of_records].date, date);   //ChatGPT "How to store records in a typedef structure"
        strcpy(fitness_data_array[num_of_records].time, time);
        fitness_data_array[num_of_records].steps = atoi(steps);
+    
+
                                         
-       
         num_of_records++;
     }
 
     
 
     // Print the number of records
-    printf("Number of records: %d\n", num_of_records);
+    printf("Number of records in file: %d\n", num_of_records);
+
+
+    for (int j=0; j<3; j++) {
+        printf("%s/%s/%d\n", fitness_data_array[j].date, fitness_data_array[j].time, fitness_data_array[j].steps);
+    }
 
     // Close the file
     fclose(file);
