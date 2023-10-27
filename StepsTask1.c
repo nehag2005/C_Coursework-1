@@ -37,6 +37,8 @@ void tokeniseRecord(const char *input, const char *delimiter,
     free(inputCopy);
 }
 
+    FITNESS_DATA fitness_data_array[200];
+
 int main() {
     
     // Open the file
@@ -51,20 +53,39 @@ int main() {
     char line[char_buffer_per_line];
     int num_of_records = 0;
 
+
    
 
     // Read the file
     while (fgets(line, char_buffer_per_line, file) != NULL) {
+
+
         // Tokenize the line to get date, time, and steps
-        char date[11];
+        char date[11];                                            // // Week 3, Bootcamp 2, Session 2 codes, functions-ex.c
         char time[6];
         char steps[8];
         tokeniseRecord(line, ",", date, time, steps);
 
-        int steps_as_integer = atoi(steps);    // turns steps from string to integer
+
+       
+
+       if (num_of_records < 3) {                              // First three rows, < 3 as it terminates at 3 
+        printf("%s/%s/%s", date, time, steps);
+       }
+
+
+
+       int steps_string_to_integer = atoi(steps);    // Week 3, Bootcamp 2, Session 2 codes, functions-ex.c
+
+       strcpy(fitness_data_array[num_of_records].date, date);   //ChatGPT "How to store records in a typedef structure"
+       strcpy(fitness_data_array[num_of_records].time, time);
+       fitness_data_array[num_of_records].steps, steps;
+                                        
        
         num_of_records++;
     }
+
+    
 
     // Print the number of records
     printf("Number of records: %d\n", num_of_records);
@@ -77,6 +98,3 @@ int main() {
 
 
 // resize array 
-// print rows
-// git commit push error
-// unseen file 
