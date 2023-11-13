@@ -11,22 +11,60 @@ typedef struct
     int steps;
 } FITNESS_DATA;
 
-char menu()
+
+#define buffer_size 200
+
+/**
+ * @brief Opens the file in the correct mode
+ *
+ * @param filename the name of the file to open
+ * @param mode the mode (r/w/a/r+/w+/a+)
+ * @return FILE* The file object to store the opened file in.
+ */
+FILE *open_file(char *filename, char *mode)
 {
-    char choice;
+    FILE *file = fopen(filename, mode);
+    if (file == NULL) {
+        perror("Error: Could not open file.\n");
+        exit(1);
+    }
+    else 
+    {
+        printf("File successfully loaded.\n");
+    }
+    return file;
+}
 
-    printf("Menu Options:\n");
-    printf("A: Specify the filename to be imported\n");
-    printf("B: Display the total number of records in the file\n");
-    printf("C: Find the date and time of the timeslot with the fewest steps\n");
-    printf("D: Find the date and time of the timeslot with the largest number of steps\n");
-    printf("E: Find the mean step count of all the records in the file\n");
-    printf("F: Find the longest continuous period where the step count is above 500 steps\n");
-    printf("Q: Quit\n");
+// This is your helper function. Do not change it in any way.
+// Inputs: character array representing a row; the delimiter character
+// Ouputs: date character array; time character array; steps character array
+void tokeniseRecord(const char *input, const char *delimiter,
+                    char *date, char *time, char *steps)
+{
+    // Create a copy of the input string as strtok modifies the string
+    char *inputCopy = strdup(input);
 
-    printf("Enter choice: "); // user input
-    scanf(" %c", &choice);                                   // https://stackoverflow.com/questions/59325404/problem-when-going-back-to-main-menu-c-programming, "How to allow user input when going back to the menu"
-    return choice;
+    // Tokenize the copied string
+    char *token = strtok(inputCopy, delimiter);
+    if (token != NULL)
+    {
+        strcpy(date, token);
+    }
+
+    token = strtok(NULL, delimiter);
+    if (token != NULL)
+    {
+        strcpy(time, token);
+    }
+
+    token = strtok(NULL, delimiter);
+    if (token != NULL)
+    {
+        strcpy(steps, token);
+    }
+
+    // Free the duplicated string
+    free(inputCopy);
 }
 
 #endif // FITNESS_DATA_STRUCT_H
