@@ -1,11 +1,11 @@
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "FitnessDataStruct.h"
-
 // Struct moved to header file
-
+#include <math.h>
 // Define any additional variables here
 // Global variables for filename and FITNESS_DATA array
 FITNESS_DATA fitness_data_array[200];
@@ -26,6 +26,10 @@ int main()
     int min_index = 0;
     float sum = 0;
     float average;
+    int period = 0;
+    int start_period = 0;
+    int longest_period = 0;
+    int longest_start_period = 0;
 
     while (1)
     {
@@ -117,9 +121,45 @@ int main()
             {
                 sum += fitness_data_array[i].steps;
             }
-            printf("%f/n", sum);
             float average = sum / num_of_records;
-            printf("Mean step count: %.2f\n", average); // round
+            printf("Mean step count: %.0f\n", round(average)); // compile with -lm
+            break;
+
+        case 'F':
+        case 'f':
+
+            for (i = 0; i < num_of_records; i++)
+            {
+                if (fitness_data_array[i].steps > 500) // keeping a record of all steps > 500 & setting the start of a continuous period to start_period
+                {
+                    if (period == 0)
+                    {
+                        start_period = i;
+                    }
+                    period++;
+                }
+
+                else // End of period (for less than 500)
+                {
+                    if (period > longest_period)
+                    {
+                        longest_start_period = start_period;
+                        longest_period = period;
+                    }
+
+                    period = 0; // reset period
+                }
+            }
+
+            // after loop ends checking
+            if (period > longest_period)
+            {
+                longest_start_period = start_period;
+                longest_period = period;
+            }
+
+            printf("Longest period start: %s %s\n", fitness_data_array[longest_start_period].date, fitness_data_array[longest_start_period].time);
+            printf("Longest period end: %s %s\n", fitness_data_array[longest_period + longest_start_period - 1].date, fitness_data_array[longest_period + longest_start_period - 1].time);
             break;
 
         case 'Q':
