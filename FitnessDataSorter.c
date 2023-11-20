@@ -1,44 +1,19 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "FitnessDataStruct.h"
 
-// Define the struct for the fitness data
-typedef struct
-{
-    char date[11];
-    char time[6];
-    int steps;
-} FitnessData;
-
-// Function to tokenize a record
-void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps)
-{
-    char *ptr = strtok(record, &delimiter);
-    if (ptr != NULL)
-    {
-        strcpy(date, ptr);
-        ptr = strtok(NULL, &delimiter);
-        if (ptr != NULL)
-        {
-            strcpy(time, ptr);
-            ptr = strtok(NULL, &delimiter);
-            if (ptr != NULL)
-            {
-                *steps = atoi(ptr);
-            }
-        }
-    }
-}
+FITNESS_DATA fitness_data_array[200];
+int num_of_records = 0;
 
 int main()
 {
+    char line[buffer_size];
+    char filename[buffer_size];
     printf("Input filename: ");
     char input_filename[100];
     fgets(line, buffer_size, stdin);
     sscanf(line, " %s ", input_filename);
 
     FILE *file = open_file(input_filename, "r");
+
 
     while (fgets(line, buffer_size, file) != NULL)
     {
@@ -48,10 +23,42 @@ int main()
         char steps[8];
         tokeniseRecord(line, ",", date, time, steps);
 
+     
+
         strcpy(fitness_data_array[num_of_records].date, date); // ChatGPT "How to store records in a typedef structure"
         strcpy(fitness_data_array[num_of_records].time, time);
         fitness_data_array[num_of_records].steps = atoi(steps);
 
+        if (fitness_data_array[0].date[0] == '\0' || fitness_data_array[0].time[0] == '\0' || fitness_data_array[0].steps[0] = 0)
+        {
+            printf("Error: Invalid file\n");
+            return 1; 
+        }
+
         num_of_records++;
     }
+
+    for (int i=0; i < num_of_records; i++)           //loop through array elements
+    {
+        for (int j= i+1; j < num_of_records; j++)               // loop through array elements from index 1 
+        {
+            if (fitness_data_array[i].steps < fitness_data_array[j].steps)          // https://www.geeksforgeeks.org/c-program-to-sort-the-elements-of-an-array-in-descending-order/
+            {
+                int max_steps = fitness_data_array[i].steps;
+                fitness_data_array[i].steps = fitness_data_array[j].steps;
+                fitness_data_array[j].steps = max_steps;
+            }
+        }
+    }
+
+    FILE *file2 = fopen("FitnessData_2023.csv.tsv", "w");
+
+
+    for (int i = 0; i < num_of_records; i++) { 
+        fprintf(file2, "%s\t%s\t%d\n", fitness_data_array[i].date, fitness_data_array[i].time, fitness_data_array[i].steps); 
+    } 
+
+    fclose(file);
+    fclose(file2);
+    return 0; 
 }

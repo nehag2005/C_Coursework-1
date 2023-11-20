@@ -1,11 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "FitnessDataStruct.h"
 
-// Struct moved to header file
-// Define any additional variables here
-// Global variables for filename and FITNESS_DATA array
+#include "FitnessDataStruct.h"
 
 FITNESS_DATA fitness_data_array[200];
 
@@ -24,7 +18,6 @@ int main()
     int min;
     int min_index = 0;
     float sum = 0;
-    float average;
     int period = 0;
     int start_period = 0;
     int longest_period = 0;
@@ -121,7 +114,8 @@ int main()
                 sum += fitness_data_array[i].steps;
             }
             float average = sum / num_of_records;
-            printf("Mean step count: %.0f\n", round(average)); // compile with -lm
+            int final_average = (int)(average + 0.5);
+            printf("Mean step count: %d\n", final_average); 
             break;
 
         case 'F':
