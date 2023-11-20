@@ -1,13 +1,12 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "FitnessDataStruct.h"
+
 // Struct moved to header file
-#include <math.h>
 // Define any additional variables here
 // Global variables for filename and FITNESS_DATA array
+
 FITNESS_DATA fitness_data_array[200];
 
 // Complete the main function
