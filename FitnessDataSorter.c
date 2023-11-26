@@ -39,21 +39,29 @@ int main()
         num_of_records++;
     }
 
+    int max_steps = 0;
+    char temp_time[10];
+
     for (int i = 0; i < num_of_records; i++) // loop through array elements
     {
         for (int j = i + 1; j < num_of_records; j++) // loop through array elements from index 1
         {
             if (fitness_data_array[i].steps < fitness_data_array[j].steps) // https://www.geeksforgeeks.org/c-program-to-sort-the-elements-of-an-array-in-descending-order/
             {
-                int max_steps = fitness_data_array[i].steps;
+                max_steps = fitness_data_array[i].steps;
                 fitness_data_array[i].steps = fitness_data_array[j].steps;
                 fitness_data_array[j].steps = max_steps;
+                
+                strcpy(temp_time, fitness_data_array[i].time);
+                strcpy(fitness_data_array[i].time, fitness_data_array[j].time);
+                strcpy(fitness_data_array[j].time, temp_time);
+                
             }
         }
     }
     
     char tsv_file[200];
-    sprintf(tsv_file, "%s.tsv", input_filename);               // ChatGPT = "how to add format the string in an array in c"
+    sprintf(tsv_file, "%s.tsv", input_filename);               
     FILE *file2 = fopen(tsv_file, "w");
     if (file2 == NULL) {
         perror("Error: invalid file\n");
@@ -68,6 +76,6 @@ int main()
     fclose(file);
     fclose(file2);
 
-    printf("Data sorted and written to FitnessData_2023.csv.tsv\n");
+    printf("Data sorted and written to %s\n", tsv_file);
     return 0;
 }
