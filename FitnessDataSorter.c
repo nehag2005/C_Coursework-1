@@ -12,37 +12,38 @@ int main()
     fgets(line, buffer_size, stdin);
     sscanf(line, " %s ", input_filename);
 
+
     FILE *file = open_file(input_filename, "r");
 
+    char date[11]; // // Week 3, Bootcamp 2, Session 2 codes, functions-ex.c
+    char time[6];
+    char steps[8];
+    
 
     while (fgets(line, buffer_size, file) != NULL)
     {
         // Tokenize the line to get date, time, and steps
-        char date[11]; // // Week 3, Bootcamp 2, Session 2 codes, functions-ex.c
-        char time[6];
-        char steps[8];
         tokeniseRecord(line, ",", date, time, steps);
-
-     
 
         strcpy(fitness_data_array[num_of_records].date, date); // ChatGPT "How to store records in a typedef structure"
         strcpy(fitness_data_array[num_of_records].time, time);
         fitness_data_array[num_of_records].steps = atoi(steps);
 
-        if (fitness_data_array[0].date[0] == '\0' || fitness_data_array[0].time[0] == '\0' || fitness_data_array[0].steps[0] = 0)
+        if (date[0] == '\0' || time[0] == '\0'|| atoi(steps) == 0)
         {
             printf("Error: Invalid file\n");
-            return 1; 
+            exit(1);
         }
+    
 
         num_of_records++;
     }
 
-    for (int i=0; i < num_of_records; i++)           //loop through array elements
+    for (int i = 0; i < num_of_records; i++) // loop through array elements
     {
-        for (int j= i+1; j < num_of_records; j++)               // loop through array elements from index 1 
+        for (int j = i + 1; j < num_of_records; j++) // loop through array elements from index 1
         {
-            if (fitness_data_array[i].steps < fitness_data_array[j].steps)          // https://www.geeksforgeeks.org/c-program-to-sort-the-elements-of-an-array-in-descending-order/
+            if (fitness_data_array[i].steps < fitness_data_array[j].steps) // https://www.geeksforgeeks.org/c-program-to-sort-the-elements-of-an-array-in-descending-order/
             {
                 int max_steps = fitness_data_array[i].steps;
                 fitness_data_array[i].steps = fitness_data_array[j].steps;
@@ -50,15 +51,23 @@ int main()
             }
         }
     }
+    
+    char tsv_file[200];
+    sprintf(tsv_file, "%s.tsv", input_filename);               // ChatGPT = "how to add format the string in an array in c"
+    FILE *file2 = fopen(tsv_file, "w");
+    if (file2 == NULL) {
+        perror("Error: invalid file\n");
+        return 1;
+    }
 
-    FILE *file2 = fopen("FitnessData_2023.csv.tsv", "w");
-
-
-    for (int i = 0; i < num_of_records; i++) { 
-        fprintf(file2, "%s\t%s\t%d\n", fitness_data_array[i].date, fitness_data_array[i].time, fitness_data_array[i].steps); 
-    } 
+    for (int i = 0; i < num_of_records; i++)
+    {
+        fprintf(file2, "%s\t%s\t%d\n", fitness_data_array[i].date, fitness_data_array[i].time, fitness_data_array[i].steps);
+    }
 
     fclose(file);
     fclose(file2);
-    return 0; 
+
+    printf("Data sorted and written to FitnessData_2023.csv.tsv\n");
+    return 0;
 }

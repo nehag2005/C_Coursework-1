@@ -12,7 +12,6 @@ typedef struct
     int steps;
 } FITNESS_DATA;
 
-
 #define buffer_size 200
 
 /**
@@ -25,17 +24,17 @@ typedef struct
 FILE *open_file(char *filename, char *mode)
 {
     FILE *file = fopen(filename, mode);
-    if (file == NULL) {
+    if (file == NULL)
+    {
         perror("Error: invalid file\n");
         exit(1);
     }
-    else 
+    else
     {
         printf("File successfully loaded.\n");
     }
     return file;
 }
-
 
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
@@ -68,6 +67,5 @@ void tokeniseRecord(const char *input, const char *delimiter,
     // Free the duplicated string
     free(inputCopy);
 }
-
 
 #endif // FITNESS_DATA_STRUCT_H
